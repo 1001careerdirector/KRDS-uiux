@@ -1,0 +1,1225 @@
+<!doctype html>
+<html lang="ko">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>KRDS 웹기획서 | 공개자료 기반 역기획</title>
+  <style>
+    :root {
+      --bg: #f6f8fb;
+      --surface: #ffffff;
+      --surface-alt: #eef3f8;
+      --text: #1f2937;
+      --muted: #5d6878;
+      --line: #d7dee8;
+      --blue: #2254c5;
+      --teal: #0f8b8d;
+      --green: #247a54;
+      --amber: #b7791f;
+      --red: #b45309;
+      --focus: #111827;
+      --shadow: 0 12px 30px rgba(31, 41, 55, 0.08);
+      --content: 1120px;
+    }
+
+    * {
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      margin: 0;
+      color: var(--text);
+      background: var(--bg);
+      font-family: "Pretendard GOV", "Pretendard", "Malgun Gothic", "Apple SD Gothic Neo", Arial, sans-serif;
+      line-height: 1.62;
+    }
+
+    a {
+      color: var(--blue);
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+    }
+
+    button,
+    input,
+    select {
+      font: inherit;
+    }
+
+    .skip-link {
+      position: absolute;
+      left: 16px;
+      top: 12px;
+      z-index: 50;
+      transform: translateY(-160%);
+      padding: 10px 14px;
+      color: #fff;
+      background: var(--focus);
+      border-radius: 6px;
+    }
+
+    .skip-link:focus {
+      transform: translateY(0);
+    }
+
+    .masthead {
+      display: flex;
+      justify-content: center;
+      border-bottom: 1px solid var(--line);
+      background: #e9eef6;
+    }
+
+    .masthead-inner {
+      width: min(100%, var(--content));
+      padding: 9px 24px;
+      color: #334155;
+      font-size: 13px;
+      font-weight: 700;
+    }
+
+    .app-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      border-bottom: 1px solid var(--line);
+      background: rgba(255, 255, 255, 0.96);
+      backdrop-filter: blur(12px);
+    }
+
+    .app-header-inner {
+      display: flex;
+      align-items: center;
+      gap: 24px;
+      width: min(100%, var(--content));
+      margin: 0 auto;
+      padding: 16px 24px;
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      min-width: 230px;
+      color: var(--text);
+      text-decoration: none;
+    }
+
+    .brand-mark {
+      width: 36px;
+      height: 36px;
+      border-left: 8px solid var(--blue);
+      border-top: 8px solid var(--teal);
+      border-bottom: 8px solid var(--green);
+      background: #fff;
+      box-shadow: inset 0 0 0 1px var(--line);
+    }
+
+    .brand strong {
+      display: block;
+      font-size: 17px;
+      line-height: 1.2;
+    }
+
+    .brand span {
+      display: block;
+      color: var(--muted);
+      font-size: 12px;
+    }
+
+    .toolbar {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin-left: auto;
+    }
+
+    .search {
+      width: min(38vw, 360px);
+      min-width: 220px;
+      padding: 10px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+    }
+
+    .print-button {
+      min-height: 40px;
+      padding: 9px 12px;
+      border: 1px solid #b9c5d6;
+      border-radius: 6px;
+      color: var(--text);
+      background: #fff;
+      cursor: pointer;
+    }
+
+    .print-button:hover {
+      border-color: var(--blue);
+    }
+
+    .layout {
+      display: grid;
+      grid-template-columns: 280px minmax(0, 1fr);
+      gap: 28px;
+      width: min(100%, var(--content));
+      margin: 0 auto;
+      padding: 28px 24px 72px;
+    }
+
+    .side-nav {
+      position: sticky;
+      top: 86px;
+      height: calc(100dvh - 112px);
+      overflow: auto;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: var(--surface);
+      box-shadow: var(--shadow);
+    }
+
+    .side-nav h2 {
+      margin: 0 0 12px;
+      font-size: 15px;
+    }
+
+    .side-nav a {
+      display: block;
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: #344054;
+      font-size: 14px;
+      text-decoration: none;
+    }
+
+    .side-nav a:hover,
+    .side-nav a:focus {
+      color: var(--blue);
+      background: #eef4ff;
+      outline: none;
+    }
+
+    main {
+      min-width: 0;
+    }
+
+    .doc-head {
+      padding: 32px 0 28px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .eyebrow {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin: 0 0 12px;
+      color: var(--teal);
+      font-size: 13px;
+      font-weight: 800;
+      letter-spacing: 0;
+    }
+
+    .eyebrow::before {
+      content: "";
+      width: 7px;
+      height: 22px;
+      background: var(--teal);
+    }
+
+    h1 {
+      max-width: 880px;
+      margin: 0;
+      font-size: 42px;
+      line-height: 1.18;
+      letter-spacing: 0;
+    }
+
+    .lead {
+      max-width: 860px;
+      margin: 16px 0 0;
+      color: var(--muted);
+      font-size: 18px;
+    }
+
+    .meta-row {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 10px;
+      margin-top: 24px;
+    }
+
+    .meta-chip {
+      padding: 7px 10px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: #344054;
+      font-size: 13px;
+    }
+
+    section {
+      padding: 36px 0;
+      border-bottom: 1px solid var(--line);
+    }
+
+    h2 {
+      margin: 0 0 14px;
+      font-size: 28px;
+      line-height: 1.28;
+      letter-spacing: 0;
+    }
+
+    h3 {
+      margin: 28px 0 12px;
+      font-size: 20px;
+      line-height: 1.35;
+    }
+
+    p {
+      margin: 0 0 14px;
+    }
+
+    .section-intro {
+      max-width: 860px;
+      color: var(--muted);
+    }
+
+    .grid {
+      display: grid;
+      gap: 16px;
+    }
+
+    .grid.cols-2 {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+    }
+
+    .grid.cols-3 {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    .grid.cols-4 {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+    }
+
+    .card {
+      min-width: 0;
+      padding: 18px;
+      border: 1px solid var(--line);
+      border-left: 6px solid var(--blue);
+      border-radius: 8px;
+      background: var(--surface);
+    }
+
+    .card.teal {
+      border-left-color: var(--teal);
+    }
+
+    .card.green {
+      border-left-color: var(--green);
+    }
+
+    .card.amber {
+      border-left-color: var(--amber);
+    }
+
+    .card.red {
+      border-left-color: var(--red);
+    }
+
+    .card h3,
+    .card h4 {
+      margin: 0 0 8px;
+      font-size: 17px;
+    }
+
+    .card p,
+    .card li {
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .card ul {
+      margin: 10px 0 0;
+      padding-left: 18px;
+    }
+
+    .note {
+      padding: 16px 18px;
+      border: 1px solid #e4c87a;
+      border-left: 6px solid var(--amber);
+      border-radius: 8px;
+      background: #fff8e6;
+    }
+
+    .source-list {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      margin: 18px 0 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .source-list a {
+      display: block;
+      padding: 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      text-decoration: none;
+    }
+
+    .flow {
+      display: grid;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 10px;
+      margin-top: 18px;
+    }
+
+    .flow-step {
+      position: relative;
+      min-height: 126px;
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .flow-step strong {
+      display: block;
+      margin-bottom: 6px;
+      color: var(--blue);
+      font-size: 22px;
+    }
+
+    .flow-step span {
+      display: block;
+      font-size: 14px;
+      font-weight: 800;
+    }
+
+    .flow-step p {
+      margin: 6px 0 0;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .ia-map {
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 18px;
+    }
+
+    .ia-node {
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .ia-node strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--blue);
+    }
+
+    .ia-node span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+      white-space: pre-line;
+    }
+
+    .shell-diagram {
+      margin-top: 18px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      overflow: hidden;
+      background: #fff;
+    }
+
+    .shell-row {
+      padding: 13px 16px;
+      border-bottom: 1px solid var(--line);
+    }
+
+    .shell-row.tint {
+      background: #eef4ff;
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .shell-main {
+      display: grid;
+      grid-template-columns: 220px 1fr 220px;
+      min-height: 180px;
+    }
+
+    .shell-main div {
+      padding: 18px;
+      border-right: 1px solid var(--line);
+      color: var(--muted);
+      font-size: 14px;
+    }
+
+    .shell-main div:last-child {
+      border-right: 0;
+    }
+
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-top: 16px;
+      border: 1px solid var(--line);
+      background: #fff;
+      font-size: 14px;
+    }
+
+    th,
+    td {
+      padding: 12px 13px;
+      border-bottom: 1px solid var(--line);
+      text-align: left;
+      vertical-align: top;
+    }
+
+    th {
+      color: #344054;
+      background: #edf2f7;
+      font-size: 13px;
+    }
+
+    tr:last-child td {
+      border-bottom: 0;
+    }
+
+    .tabs {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 20px 0 12px;
+    }
+
+    .tab-button {
+      min-height: 38px;
+      padding: 8px 12px;
+      border: 1px solid var(--line);
+      border-radius: 6px;
+      background: #fff;
+      color: #344054;
+      cursor: pointer;
+    }
+
+    .tab-button[aria-pressed="true"] {
+      color: #fff;
+      border-color: var(--blue);
+      background: var(--blue);
+    }
+
+    .component-grid {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 12px;
+      margin-top: 14px;
+    }
+
+    .component-card {
+      padding: 14px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+    }
+
+    .component-card[data-hidden="true"] {
+      display: none;
+    }
+
+    .component-card b {
+      display: block;
+      margin-bottom: 6px;
+      font-size: 15px;
+    }
+
+    .component-card small {
+      color: var(--blue);
+      font-weight: 800;
+    }
+
+    .component-card p {
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .deliverables {
+      display: grid;
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 12px;
+    }
+
+    .deliverables a {
+      display: block;
+      min-height: 112px;
+      padding: 16px;
+      border: 1px solid var(--line);
+      border-radius: 8px;
+      background: #fff;
+      text-decoration: none;
+    }
+
+    .deliverables strong {
+      display: block;
+      margin-bottom: 8px;
+      color: var(--text);
+    }
+
+    .deliverables span {
+      display: block;
+      color: var(--muted);
+      font-size: 13px;
+    }
+
+    .empty-state {
+      display: none;
+      margin-top: 16px;
+      padding: 16px;
+      border: 1px dashed #aab6c8;
+      border-radius: 8px;
+      color: var(--muted);
+      background: #fff;
+    }
+
+    body.has-no-results .empty-state {
+      display: block;
+    }
+
+    body.has-no-results .content-section {
+      display: none;
+    }
+
+    mark {
+      background: #fff0a8;
+      color: inherit;
+      padding: 0 2px;
+      border-radius: 3px;
+    }
+
+    @media (max-width: 980px) {
+      .app-header-inner {
+        align-items: stretch;
+        flex-direction: column;
+      }
+
+      .brand {
+        min-width: 0;
+      }
+
+      .toolbar {
+        width: 100%;
+        margin-left: 0;
+      }
+
+      .search {
+        flex: 1;
+        width: 100%;
+        min-width: 0;
+      }
+
+      .layout {
+        grid-template-columns: 1fr;
+      }
+
+      .side-nav {
+        position: static;
+        height: auto;
+      }
+
+      .grid.cols-2,
+      .grid.cols-3,
+      .grid.cols-4,
+      .source-list,
+      .flow,
+      .ia-map,
+      .component-grid,
+      .deliverables {
+        grid-template-columns: 1fr;
+      }
+
+      .shell-main {
+        grid-template-columns: 1fr;
+      }
+
+      .shell-main div {
+        border-right: 0;
+        border-bottom: 1px solid var(--line);
+      }
+
+      h1 {
+        font-size: 32px;
+      }
+    }
+
+    @media print {
+      :root {
+        --bg: #ffffff;
+      }
+
+      .masthead,
+      .app-header,
+      .side-nav,
+      .skip-link,
+      .tabs,
+      .print-button {
+        display: none !important;
+      }
+
+      .layout {
+        display: block;
+        width: 100%;
+        padding: 0;
+      }
+
+      section {
+        break-inside: avoid;
+        padding: 22px 0;
+      }
+
+      a {
+        color: #000;
+      }
+
+      .card,
+      .component-card,
+      .flow-step,
+      .ia-node,
+      .deliverables a {
+        box-shadow: none;
+      }
+    }
+  </style>
+</head>
+<body>
+  <a class="skip-link" href="#main">본문 바로가기</a>
+  <div class="masthead">
+    <div class="masthead-inner">이 문서는 KRDS 공개자료 기반 역기획 산출물을 웹기획서 형식으로 재구성한 HTML 문서입니다.</div>
+  </div>
+
+  <header class="app-header">
+    <div class="app-header-inner">
+      <a class="brand" href="#top" aria-label="KRDS 웹기획서 처음으로">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>
+          <strong>KRDS 웹기획서</strong>
+          <span>Reverse Planning HTML</span>
+        </span>
+      </a>
+      <div class="toolbar">
+        <input id="docSearch" class="search" type="search" placeholder="문서 내 검색" aria-label="문서 내 검색">
+        <button class="print-button" type="button" onclick="window.print()">인쇄/PDF</button>
+      </div>
+    </div>
+  </header>
+
+  <div class="layout" id="top">
+    <nav class="side-nav" aria-label="문서 목차">
+      <h2>목차</h2>
+      <a href="#overview">1. 프로젝트 개요</a>
+      <a href="#sources">2. 공개 근거</a>
+      <a href="#users">3. 사용자와 여정</a>
+      <a href="#ia">4. 정보 구조</a>
+      <a href="#screen">5. 화면 요구사항</a>
+      <a href="#component">6. 컴포넌트 요구사항</a>
+      <a href="#figma">7. Figma 제작 사양</a>
+      <a href="#token">8. 토큰/개발 연계</a>
+      <a href="#accessibility">9. 접근성/포용</a>
+      <a href="#operation">10. 운영/검수</a>
+      <a href="#deliverables">11. 산출물</a>
+    </nav>
+
+    <main id="main">
+      <div class="doc-head">
+        <p class="eyebrow">WEB PLANNING DOCUMENT</p>
+        <h1>KRDS 웹사이트 및 디자인 시스템 웹기획서</h1>
+        <p class="lead">KRDS 공식 웹사이트, GitHub, Figma Community 공개 자료와 기존 산출물인 Markdown 기획서, Figma 사양서, 컴포넌트 매트릭스를 바탕으로 브라우저에서 검토 가능한 웹기획서 형태로 재구성했다.</p>
+        <div class="meta-row" aria-label="문서 메타 정보">
+          <span class="meta-chip">작성일 2026-06-09</span>
+          <span class="meta-chip">근거: 공개자료 기반</span>
+          <span class="meta-chip">범위: 웹사이트 + Figma + Component Kit</span>
+          <span class="meta-chip">상태: 제출/검토용 HTML</span>
+        </div>
+      </div>
+
+      <div class="empty-state" role="status">검색 결과가 없습니다. 다른 단어나 더 일반적인 표현으로 검색해 주세요.</div>
+
+      <section id="overview" class="content-section">
+        <h2>1. 프로젝트 개요</h2>
+        <p class="section-intro">KRDS는 공공 디지털 서비스 제작자가 같은 언어와 같은 자산으로 설계, 개발, 검수, 운영할 수 있도록 하는 정부 서비스 표준 UX/UI 플랫폼으로 역기획된다.</p>
+        <div class="grid cols-4">
+          <article class="card">
+            <h3>핵심 목적</h3>
+            <p>국민에게 예측 가능하고 접근 가능한 디지털 정부 서비스 경험을 제공한다.</p>
+          </article>
+          <article class="card teal">
+            <h3>핵심 수단</h3>
+            <p>Figma 라이브러리, 디자인 토큰, HTML Component Kit, 문서화 웹사이트를 연결한다.</p>
+          </article>
+          <article class="card green">
+            <h3>핵심 사용자</h3>
+            <p>디자이너, 개발자, 정부 관계자가 각자의 업무 맥락에서 KRDS를 적용한다.</p>
+          </article>
+          <article class="card amber">
+            <h3>문서 성격</h3>
+            <p>내부 KPI, 예산, 조직, 일정은 공개자료로 확인할 수 없어 제안/추정으로 분리한다.</p>
+          </article>
+        </div>
+
+        <h3>기획 목표</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>목표</th>
+              <th>설명</th>
+              <th>성공 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>경험 표준화</td>
+              <td>기관별 화면 구조와 상호작용 편차를 줄인다.</td>
+              <td>핵심 과업에서 동일한 패턴과 컴포넌트 사용</td>
+            </tr>
+            <tr>
+              <td>협업 효율화</td>
+              <td>디자인 토큰과 네이밍 규칙으로 설계·개발 언어를 통일한다.</td>
+              <td>Figma property, 토큰, CSS class 대응표 운영</td>
+            </tr>
+            <tr>
+              <td>접근성 내재화</td>
+              <td>디지털 포용 기능과 접근성 기준을 제품 기능으로 제공한다.</td>
+              <td>글자·화면 설정, 선명한 화면 모드, TTS, 언어 변경 제공</td>
+            </tr>
+            <tr>
+              <td>운영형 시스템</td>
+              <td>문서, Figma, GitHub, NPM, 적용 사례, 문의 채널을 버전 관리한다.</td>
+              <td>변경 이력, FAQ, 적용 사례, 피드백 루프 유지</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="sources" class="content-section">
+        <h2>2. 공개 근거</h2>
+        <p class="section-intro">본 웹기획서는 공개적으로 확인 가능한 KRDS 사이트와 저장소, Figma Community 링크를 기준으로 작성했다.</p>
+        <ul class="source-list">
+          <li><a href="https://www.krds.go.kr/html/site/index.html" target="_blank" rel="noreferrer">KRDS 공식 웹사이트</a></li>
+          <li><a href="https://github.com/KRDS-uiux/krds-uiux" target="_blank" rel="noreferrer">KRDS GitHub 저장소</a></li>
+          <li><a href="https://www.figma.com/@krds" target="_blank" rel="noreferrer">KRDS Figma Community</a></li>
+          <li><a href="https://www.krds.go.kr/html/site/outline/outline_02.html" target="_blank" rel="noreferrer">디자이너 시작하기</a></li>
+          <li><a href="https://www.krds.go.kr/html/site/outline/outline_03.html" target="_blank" rel="noreferrer">개발자 시작하기</a></li>
+          <li><a href="https://www.krds.go.kr/html/site/component/component_summary.html" target="_blank" rel="noreferrer">컴포넌트 목록</a></li>
+          <li><a href="https://www.krds.go.kr/html/site/style/style_07.html" target="_blank" rel="noreferrer">디자인 토큰</a></li>
+          <li><a href="https://www.krds.go.kr/html/site/utility/utility_04.html" target="_blank" rel="noreferrer">디지털 포용</a></li>
+        </ul>
+        <div class="note">
+          <strong>주의 사항</strong>
+          <p>공식 컴포넌트 목록은 웹 문서 기준 `총 37건`으로 보이고, 디자이너 시작하기 문서는 Figma 라이브러리 `컴포넌트 43종`을 언급한다. 본 기획서는 이 차이를 웹 문서화 범위와 Figma 자산 범위의 차이로 보고, 실제 Figma 원본에서 최종 자산 수를 대조하는 것을 오픈 이슈로 둔다.</p>
+        </div>
+      </section>
+
+      <section id="users" class="content-section">
+        <h2>3. 사용자와 여정</h2>
+        <p class="section-intro">KRDS의 첫 진입은 역할별로 나뉘며, 각 사용자는 다른 목적과 성공 기준을 가진다.</p>
+        <div class="grid cols-3">
+          <article class="card">
+            <h3>디자이너</h3>
+            <p>Figma 라이브러리와 토큰, 컴포넌트, 패턴을 활용해 일관된 화면을 설계한다.</p>
+            <ul>
+              <li>Pretendard GOV 서체 준비</li>
+              <li>Figma Community 파일 열기</li>
+              <li>Assets 검색과 variant 변경</li>
+              <li>선명한 화면 모드/반응형 검수</li>
+            </ul>
+          </article>
+          <article class="card teal">
+            <h3>개발자</h3>
+            <p>HTML Component Kit과 토큰을 프로젝트에 설치하고 접근성 상호작용을 구현한다.</p>
+            <ul>
+              <li>NPM/GitHub/CDN 설치</li>
+              <li>SCSS/CSS/JS 적용</li>
+              <li>토큰 JSON to CSS variable</li>
+              <li>React/Vue 환경 연계</li>
+            </ul>
+          </article>
+          <article class="card green">
+            <h3>정부 관계자</h3>
+            <p>적용 범위, 접근성, 디지털 포용, 적용 사례를 기준으로 사업 품질을 검수한다.</p>
+            <ul>
+              <li>표준형/확장형 이해</li>
+              <li>접근성 체크리스트 확인</li>
+              <li>적용 사례 검토</li>
+              <li>FAQ와 문의 채널 사용</li>
+            </ul>
+          </article>
+        </div>
+      </section>
+
+      <section id="ia" class="content-section">
+        <h2>4. 정보 구조</h2>
+        <p class="section-intro">KRDS 웹사이트의 IA는 역할별 온보딩과 산출물별 깊은 탐색을 동시에 제공한다.</p>
+        <div class="ia-map" aria-label="KRDS 정보 구조">
+          <div class="ia-node"><strong>시작하기</strong><span>KRDS 시작하기&#10;디자이너&#10;개발자&#10;정부 관계자&#10;리소스 다운로드</span></div>
+          <div class="ia-node"><strong>디자인 스타일</strong><span>색상&#10;타이포그래피&#10;형태&#10;레이아웃&#10;아이콘&#10;엘리베이션&#10;디자인 토큰</span></div>
+          <div class="ia-node"><strong>컴포넌트</strong><span>아이덴티티&#10;탐색&#10;레이아웃 및 표현&#10;액션&#10;선택&#10;피드백&#10;도움&#10;입력&#10;설정&#10;콘텐츠</span></div>
+          <div class="ia-node"><strong>기본 패턴</strong><span>개인 식별 정보 입력&#10;도움&#10;동의&#10;목록 탐색&#10;사용자 피드백&#10;오류&#10;입력 폼&#10;첨부파일&#10;확인</span></div>
+          <div class="ia-node"><strong>서비스 패턴</strong><span>방문&#10;검색&#10;로그인&#10;신청&#10;정책 정보 확인</span></div>
+          <div class="ia-node"><strong>소식·소통 / 소개</strong><span>새소식&#10;FAQ&#10;적용 사례&#10;자료실&#10;문의 및 건의&#10;디자인 원칙&#10;디지털 포용</span></div>
+        </div>
+      </section>
+
+      <section id="screen" class="content-section">
+        <h2>5. 화면 요구사항</h2>
+        <p class="section-intro">화면 요구사항은 장식적 페이지보다 긴 문서 안에서 사용자가 신뢰, 위치, 다음 행동을 잃지 않게 하는 구조에 초점을 둔다.</p>
+        <h3>공통 Shell</h3>
+        <div class="shell-diagram" role="img" aria-label="공통 화면 구조 다이어그램">
+          <div class="shell-row tint">공식 배너 + 본문 바로가기</div>
+          <div class="shell-row"><strong>Header:</strong> KRDS Logo | GNB | 통합검색 | 전체메뉴 | 언어 | 글자·화면 설정</div>
+          <div class="shell-row">Breadcrumb</div>
+          <div class="shell-main">
+            <div><strong>Side navigation</strong><br>현재 위치<br>하위 메뉴<br>문서 이동</div>
+            <div><strong>Main content</strong><br>H1, intro, section, example, code, accessibility note</div>
+            <div><strong>In-page navigation</strong><br>섹션 목차<br>스크롤 현재 상태</div>
+          </div>
+          <div class="shell-row"><strong>Footer:</strong> 연락처, 이메일, 문의, GitHub, Figma, 이용 안내, 저작권</div>
+        </div>
+
+        <h3>주요 화면별 요구사항</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>화면</th>
+              <th>목적</th>
+              <th>필수 구성</th>
+              <th>검수 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>메인 페이지</td>
+              <td>KRDS 목적과 역할별 시작 경로를 빠르게 전달</td>
+              <td>히어로 메시지, 역할별 시작하기, 주요 구성, 적용 사례, FAQ, 문의 CTA</td>
+              <td>첫 화면에서 목적, 대상, 시작 액션이 확인된다.</td>
+            </tr>
+            <tr>
+              <td>디자이너 시작하기</td>
+              <td>Figma 라이브러리를 설계 업무에 적용</td>
+              <td>서체, Figma 파일, 파일 구조, Assets 검색, variant 변경, 토큰 사용</td>
+              <td>초보자는 순서대로, 숙련자는 섹션으로 바로 이동 가능하다.</td>
+            </tr>
+            <tr>
+              <td>개발자 시작하기</td>
+              <td>HTML Component Kit 설치와 토큰 연동</td>
+              <td>NPM/GitHub/CDN, React/Vue, SCSS/CSS, JS, 토큰 추출</td>
+              <td>설치 방식별 최소 예제와 주의사항이 제공된다.</td>
+            </tr>
+            <tr>
+              <td>컴포넌트 목록</td>
+              <td>컴포넌트 검색과 유형별 탐색</td>
+              <td>검색, 필터, 총 개수, 컴포넌트명/영문명/설명/유형</td>
+              <td>검색/필터 결과와 결과 없음 상태가 명확하다.</td>
+            </tr>
+            <tr>
+              <td>컴포넌트 상세</td>
+              <td>설계-개발 계약서 역할</td>
+              <td>정의, 사용 기준, 변형, 상태, 접근성, 코드, 관련 패턴</td>
+              <td>Figma property, 상태명, CSS class가 대응된다.</td>
+            </tr>
+            <tr>
+              <td>패턴 상세</td>
+              <td>반복 과업 UI 조합과 사용자 여정 제공</td>
+              <td>과업, 포함 컴포넌트, 화면 구조, 예외, 접근성</td>
+              <td>과업 완료 흐름과 오류/확인 상태가 포함된다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="component" class="content-section">
+        <h2>6. 컴포넌트 요구사항</h2>
+        <p class="section-intro">컴포넌트는 카테고리 목록보다 상태, 모드, 반응형, 접근성, Figma property, 코드 상태명의 매트릭스로 관리해야 한다.</p>
+        <div class="tabs" aria-label="컴포넌트 카테고리 필터">
+          <button class="tab-button" type="button" data-filter="all" aria-pressed="true">전체</button>
+          <button class="tab-button" type="button" data-filter="Identity" aria-pressed="false">아이덴티티</button>
+          <button class="tab-button" type="button" data-filter="Navigation" aria-pressed="false">탐색</button>
+          <button class="tab-button" type="button" data-filter="Layout" aria-pressed="false">레이아웃</button>
+          <button class="tab-button" type="button" data-filter="Action" aria-pressed="false">액션</button>
+          <button class="tab-button" type="button" data-filter="Selection" aria-pressed="false">선택</button>
+          <button class="tab-button" type="button" data-filter="Feedback" aria-pressed="false">피드백</button>
+          <button class="tab-button" type="button" data-filter="Help" aria-pressed="false">도움</button>
+          <button class="tab-button" type="button" data-filter="Input" aria-pressed="false">입력</button>
+          <button class="tab-button" type="button" data-filter="Mobile" aria-pressed="false">모바일</button>
+        </div>
+        <div class="component-grid" id="componentGrid">
+          <article class="component-card" data-category="Identity"><small>Identity</small><b>공식 배너 / Masthead</b><p>공식 전자정부 서비스임을 식별한다. 포커스와 공식성 안내 텍스트가 필요하다.</p></article>
+          <article class="component-card" data-category="Identity"><small>Identity</small><b>헤더 / Header</b><p>브랜드, GNB, 통합검색, 전체메뉴, 언어, 화면 설정을 제공한다.</p></article>
+          <article class="component-card" data-category="Navigation"><small>Navigation</small><b>건너뛰기 링크 / Skip link</b><p>키보드 사용자가 반복 영역을 건너뛰고 본문으로 이동하게 한다.</p></article>
+          <article class="component-card" data-category="Navigation"><small>Navigation</small><b>브레드크럼 / Breadcrumb</b><p>현재 위치와 상위 계층을 표시하며 current 상태가 보조기술에 전달되어야 한다.</p></article>
+          <article class="component-card" data-category="Layout"><small>Layout</small><b>모달 / Modal</b><p>단일 과업 집중을 위해 사용하며 포커스 트랩, 초기 포커스, 닫기 후 복귀가 필요하다.</p></article>
+          <article class="component-card" data-category="Layout"><small>Layout</small><b>탭 / Tab</b><p>상호배타적 콘텐츠 전환에 사용하며 tablist, tab, tabpanel 관계를 명확히 한다.</p></article>
+          <article class="component-card" data-category="Action"><small>Action</small><b>버튼 / Button</b><p>기능 실행 또는 상태 변경에 사용한다. 아이콘 버튼은 접근 가능한 이름이 필수다.</p></article>
+          <article class="component-card" data-category="Selection"><small>Selection</small><b>라디오 버튼 / Radio button</b><p>상호배타적 단일 선택에 사용하며 그룹 레이블과 옵션 레이블을 제공한다.</p></article>
+          <article class="component-card" data-category="Selection"><small>Selection</small><b>체크박스 / Checkbox</b><p>다중 선택 또는 독립 동의에 사용하며 선택 상태와 레이블이 명확해야 한다.</p></article>
+          <article class="component-card" data-category="Feedback"><small>Feedback</small><b>단계 표시기 / Step indicator</b><p>절차 진행 상태를 안내하며 현재 단계가 스크린 리더에서 확인되어야 한다.</p></article>
+          <article class="component-card" data-category="Feedback"><small>Feedback</small><b>토스트 / Toast</b><p>사용자 행동 결과를 임시 안내한다. 중요한 정보를 자동 소멸 메시지에만 담지 않는다.</p></article>
+          <article class="component-card" data-category="Help"><small>Help</small><b>툴팁 / Tooltip</b><p>짧은 부가 설명에만 사용하고, 필수 정보는 툴팁 안에만 숨기지 않는다.</p></article>
+          <article class="component-card" data-category="Help"><small>Help</small><b>음성지원 / TTS</b><p>주요 안내를 음성으로 읽는 보조 수단이며 재생 상태와 읽을 대상이 명확해야 한다.</p></article>
+          <article class="component-card" data-category="Input"><small>Input</small><b>텍스트 입력 필드 / Text input</b><p>레이블, 도움말, 오류 메시지, 필수 여부, 자동완성 속성을 제공한다.</p></article>
+          <article class="component-card" data-category="Input"><small>Input</small><b>파일 업로드 / File upload</b><p>허용 형식, 용량, 개수, 업로드 상태, 삭제, 재시도 흐름을 제공한다.</p></article>
+          <article class="component-card" data-category="Mobile"><small>Mobile</small><b>바텀시트 / Bottom sheet</b><p>모바일 하단 집중 패널로 사용하며 닫기, 포커스 이동, 드래그 핸들을 고려한다.</p></article>
+        </div>
+
+        <h3>공통 상태 요구사항</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>상태 그룹</th>
+              <th>필수 상태</th>
+              <th>설계 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>인터랙션</td>
+              <td>enabled, hover, pressed, focus, disabled</td>
+              <td>focus 상태는 모든 조작 컴포넌트에 명시한다.</td>
+            </tr>
+            <tr>
+              <td>선택/확장</td>
+              <td>selected, expanded, collapsed, current</td>
+              <td>선택과 펼침 상태가 보조기술에 전달되어야 한다.</td>
+            </tr>
+            <tr>
+              <td>입력</td>
+              <td>empty, filled, required, readonly, error, success</td>
+              <td>오류는 색상만으로 전달하지 않고 필드와 연결한다.</td>
+            </tr>
+            <tr>
+              <td>모드</td>
+              <td>light, high-contrast, large, small</td>
+              <td>선명한 화면 모드와 반응형 모드에서 재검수한다.</td>
+            </tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="figma" class="content-section">
+        <h2>7. Figma 제작 사양</h2>
+        <p class="section-intro">KRDS Figma Community 파일을 기준으로 작업하되, 실무 파일에서는 화면 요구사항, 컴포넌트 요구사항, 토큰 매핑, QA 보드를 별도 페이지로 관리한다.</p>
+        <div class="grid cols-4">
+          <article class="card">
+            <h3>원본 라이브러리</h3>
+            <p>Style Guide, Components, Patterns, Icons와 Local Variables/Styles를 확인한다.</p>
+          </article>
+          <article class="card teal">
+            <h3>작업 페이지</h3>
+            <p>Product Brief, IA, Screen Requirements, Component Requirements, Token Mapping을 둔다.</p>
+          </article>
+          <article class="card green">
+            <h3>Property 규칙</h3>
+            <p>Type, Size, State, Icon, Mode, Responsive, Platform을 공통 속성으로 관리한다.</p>
+          </article>
+          <article class="card amber">
+            <h3>QA 보드</h3>
+            <p>Focus, label, state, keyboard, contrast, large font, responsive 검수 결과를 남긴다.</p>
+          </article>
+        </div>
+
+        <h3>권장 Figma 페이지 구조</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Page</th>
+              <th>Frame</th>
+              <th>목적</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>00 Cover</td><td>Cover / KRDS Reverse Planning</td><td>문서 표지와 범위</td></tr>
+            <tr><td>01 Product Brief</td><td>Project Overview, Evidence Board</td><td>목표, 사용자, 공개 근거</td></tr>
+            <tr><td>02 IA & User Flows</td><td>Information Architecture, Role Journeys</td><td>메뉴 구조와 사용자 여정</td></tr>
+            <tr><td>03 Screen Requirements</td><td>Common Shell, Main Page, Search Overlay</td><td>화면별 요구사항</td></tr>
+            <tr><td>04 Component Requirements</td><td>Category Matrix, State Matrix</td><td>컴포넌트 요구사항과 상태</td></tr>
+            <tr><td>06 Design Token Mapping</td><td>Token Flow, Variable Collections</td><td>Figma variable과 CSS variable 연결</td></tr>
+            <tr><td>07 Accessibility QA</td><td>KWCAG/WCAG Checklist</td><td>접근성 검수</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="token" class="content-section">
+        <h2>8. 토큰/개발 연계</h2>
+        <p class="section-intro">KRDS의 토큰 흐름은 Figma에서 끝나지 않고 JSON, CSS variable, SCSS/CSS, HTML Component Kit까지 이어진다.</p>
+        <div class="flow" aria-label="토큰 연계 흐름">
+          <div class="flow-step"><strong>1</strong><span>Figma Variables</span><p>primitive, semantic, mode, responsive</p></div>
+          <div class="flow-step"><strong>2</strong><span>JSON Export</span><p>px to rem 변환 원칙</p></div>
+          <div class="flow-step"><strong>3</strong><span>CSS Variables</span><p>`--krds` namespace</p></div>
+          <div class="flow-step"><strong>4</strong><span>SCSS/CSS</span><p>원본 수정 대신 프로젝트 재선언</p></div>
+          <div class="flow-step"><strong>5</strong><span>HTML Kit</span><p>마크업, 스타일, JS 상호작용</p></div>
+        </div>
+
+        <h3>Variable collection</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>Collection</th>
+              <th>역할</th>
+              <th>사용 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>primitive</td><td>color, typo, number 등 원시값</td><td>직접 UI 적용 금지, 다른 토큰의 참조 기준</td></tr>
+            <tr><td>semantic</td><td>gap, padding, size-height, radius</td><td>실제 UI 의미에 맞게 적용</td></tr>
+            <tr><td>mode</td><td>color, border-width, shadow</td><td>light/high-contrast 전환</td></tr>
+            <tr><td>responsive</td><td>typo, layout-gap, card-padding</td><td>large/small 반응형 전환</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="accessibility" class="content-section">
+        <h2>9. 접근성/디지털 포용</h2>
+        <p class="section-intro">공공 디지털 서비스의 품질은 기본 화면보다 접근성, 오류, 대기, 인증, 글자 확대, 고대비 같은 예외 조건에서 결정된다.</p>
+        <div class="grid cols-3">
+          <article class="card">
+            <h3>기준</h3>
+            <p>KWCAG 2.2, WCAG 2.1/2.2, ARIA Authoring Practices Guide를 참고한다.</p>
+          </article>
+          <article class="card teal">
+            <h3>특화 기능</h3>
+            <p>선명한 화면 모드, 언어 변경, 화면 크기 조정, 접근 가능한 미디어, 숨긴 콘텐츠, 음성지원.</p>
+          </article>
+          <article class="card green">
+            <h3>필수 검수</h3>
+            <p>키보드 조작, 포커스 순서, 접근 가능한 이름, 오류 연결, 시간 제한 조절, 상태 메시지.</p>
+          </article>
+        </div>
+        <table>
+          <thead>
+            <tr>
+              <th>화면/기능</th>
+              <th>체크 항목</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>검색</td><td>포커스 이동, 결과 수 안내, 결과 없음 안내, 닫기</td></tr>
+            <tr><td>전체메뉴</td><td>현재 위치, Esc 닫기, 배경 포커스 차단</td></tr>
+            <tr><td>입력 폼</td><td>오류 요약, 필드별 오류 연결, 자동완성</td></tr>
+            <tr><td>로그인</td><td>접근 가능한 인증, 초점 순서, 세션 연장</td></tr>
+            <tr><td>신청</td><td>현재 단계 안내, 섹션 제목, 제출 전 확인</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="operation" class="content-section">
+        <h2>10. 운영/검수</h2>
+        <p class="section-intro">KRDS는 한 번 배포하고 끝나는 문서가 아니라 Figma, 코드, 문서, 적용 사례, 문의 채널이 함께 갱신되는 운영형 시스템이어야 한다.</p>
+        <div class="grid cols-2">
+          <article class="card">
+            <h3>버전 관리 대상</h3>
+            <ul>
+              <li>Figma 라이브러리 버전</li>
+              <li>HTML Component Kit 버전</li>
+              <li>디자인 토큰 버전</li>
+              <li>문서 웹사이트 변경 이력</li>
+              <li>적용 사례와 FAQ</li>
+            </ul>
+          </article>
+          <article class="card teal">
+            <h3>권장 KPI</h3>
+            <ul>
+              <li>Figma duplicate/use 수</li>
+              <li>NPM 다운로드 수</li>
+              <li>GitHub issue 해결률</li>
+              <li>문서 검색 성공률</li>
+              <li>접근성 검수 이슈 감소율</li>
+            </ul>
+          </article>
+        </div>
+        <h3>인수 기준</h3>
+        <table>
+          <thead>
+            <tr>
+              <th>영역</th>
+              <th>완료 기준</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><td>문서 웹사이트</td><td>역할별 시작 경로, 통합검색, 전체메뉴, 컴포넌트/패턴 상세, FAQ/문의가 제공된다.</td></tr>
+            <tr><td>Figma 라이브러리</td><td>Pretendard GOV, Local Variables, variant/property, 기본/서비스 패턴, mode/responsive QA를 포함한다.</td></tr>
+            <tr><td>개발 키트</td><td>NPM/GitHub/CDN, SCSS/CSS/JS, 토큰 JSON to CSS variable, 키보드/접근성 상호작용을 제공한다.</td></tr>
+          </tbody>
+        </table>
+      </section>
+
+      <section id="deliverables" class="content-section">
+        <h2>11. 산출물</h2>
+        <p class="section-intro">아래 파일은 이 HTML 웹기획서의 기준 자료다. 같은 폴더에 있으므로 브라우저에서 바로 열거나 다운로드해 검토할 수 있다.</p>
+        <div class="deliverables">
+          <a href="krds_reverse_planning_document.md">
+            <strong>Markdown 역기획서</strong>
+            <span>상세 본문, 화면 요구사항, 컴포넌트 요구사항 포함</span>
+          </a>
+          <a href="krds_reverse_planning_google_slides.pptx">
+            <strong>Google Slides용 PPTX</strong>
+            <span>12장 요약 발표본</span>
+          </a>
+          <a href="krds_figma_handoff_spec.md">
+            <strong>Figma 제작 사양서</strong>
+            <span>페이지, 프레임, 토큰, property, QA 구조</span>
+          </a>
+          <a href="krds_component_requirements_matrix.csv">
+            <strong>컴포넌트 CSV</strong>
+            <span>카테고리별 목적, 상태, 접근성, Figma 메모</span>
+          </a>
+        </div>
+      </section>
+    </main>
+  </div>
+
+  <script>
+    const searchInput = document.querySelector("#docSearch");
+    const sections = Array.from(document.querySelectorAll(".content-section"));
+    const cards = Array.from(document.querySelectorAll(".component-card"));
+    const tabButtons = Array.from(document.querySelectorAll(".tab-button"));
+
+    function normalize(value) {
+      return value.toLowerCase().replace(/\s+/g, " ").trim();
+    }
+
+    function filterDocument() {
+      const query = normalize(searchInput.value);
+      let visible = 0;
+      sections.forEach((section) => {
+        const haystack = normalize(section.innerText);
+        const show = !query || haystack.includes(query);
+        section.hidden = !show;
+        if (show) visible += 1;
+      });
+      document.body.classList.toggle("has-no-results", visible === 0);
+    }
+
+    searchInput.addEventListener("input", filterDocument);
+
+    tabButtons.forEach((button) => {
+      button.addEventListener("click", () => {
+        const filter = button.dataset.filter;
+        tabButtons.forEach((item) => item.setAttribute("aria-pressed", item === button ? "true" : "false"));
+        cards.forEach((card) => {
+          const hidden = filter !== "all" && card.dataset.category !== filter;
+          card.dataset.hidden = hidden ? "true" : "false";
+        });
+      });
+    });
+  </script>
+</body>
+</html>
